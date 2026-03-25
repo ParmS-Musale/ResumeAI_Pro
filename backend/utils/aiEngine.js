@@ -38,6 +38,32 @@ const optimizeResume = async (resumeText, jobDescription) => {
 
     return JSON.parse(response.choices[0].message.content);
   } catch (error) {
+    if (error.code === 'insufficient_quota') {
+      console.warn('OpenAI Quota reached. Using Mock Data for demonstration.');
+      return {
+        summary: "Highly skilled software engineer with a strong foundation in full-stack development. (MOCK DATA - Quota Exceeded)",
+        skills: ["JavaScript", "React", "Node.js", "MongoDB", "Tailwind CSS"],
+        experience: [{
+          role: "Senior Developer",
+          company: "Tech Solutions",
+          duration: "2021 - Present",
+          bulletPoints: [
+            "Optimized application performance by 40% using modern techniques.",
+            "Led a team of 5 developers to deliver high-quality software."
+          ]
+        }],
+        projects: [{
+          name: "ResumeAI Pro",
+          description: ["An AI-powered resume optimization platform."],
+          link: "https://github.com/example/resume-ai"
+        }],
+        education: [{
+          degree: "Bachelor of Science in Computer Science",
+          institution: "State University",
+          year: "2020"
+        }]
+      };
+    }
     console.error('AI Optimization Error:', error);
     throw new Error('Failed to optimize resume');
   }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 import { Download, FileCode, CheckCircle2, AlertCircle, ChevronLeft, Zap, ExternalLink } from 'lucide-react';
+import ResumePrint from '../components/ResumePrint';
 
 const Results = () => {
   const { id } = useParams();
@@ -38,6 +39,10 @@ const Results = () => {
     }
   };
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   if (loading) return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="flex flex-col items-center gap-4">
@@ -64,12 +69,17 @@ const Results = () => {
             <FileCode className="w-4 h-4 text-blue-400" />
             Export .TEX (Overleaf)
           </button>
-          <button className="bg-primary-500 px-4 py-2 rounded-lg text-sm font-bold hover:bg-primary-600 transition-all flex items-center gap-2">
+          <button 
+            onClick={handlePrint}
+            className="bg-primary-500 px-4 py-2 rounded-lg text-sm font-bold hover:bg-primary-600 transition-all flex items-center gap-2"
+          >
             <Download className="w-4 h-4" />
             Download PDF
           </button>
         </div>
       </div>
+
+      <ResumePrint resume={optimized} />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Sidebar: ATS Analytics */}
