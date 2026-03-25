@@ -7,19 +7,30 @@ const Dashboard = () => {
   const [resumes, setResumes] = useState([]);
   const [loading, setLoading] = useState(true);
 
+  const fetchResumes = async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/resumes/default-user');
+      setResumes(response.data);
+    } catch (error) {
+      console.error('Fetch error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchResumes = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/resumes/default-user');
-        setResumes(response.data);
-      } catch (error) {
-        console.error('Fetch error:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchResumes();
   }, []);
+
+  const handleDelete = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this optimization?')) return;
+    try {
+      await axios.delete(`http://localhost:5000/api/resume/${id}`);
+      setResumes(resumes.filter(r => r._id !== id));
+    } catch (error) {
+      alert('Failed to delete resume');
+    }
+  };
 
   if (loading) return <div className="p-20 text-center text-zinc-500">Loading your history...</div>;
 
@@ -78,7 +89,10 @@ const Dashboard = () => {
                   View Details
                   <ExternalLink className="w-3 h-3" />
                 </Link>
-                <button className="p-2 bg-red-500/5 text-red-500 rounded-lg hover:bg-red-500/10 transition-all border border-red-500/10">
+                <button 
+                  onClick={() => handleDelete(resume._id)}
+                  className="p-2 bg-red-500/5 text-red-500 rounded-lg hover:bg-red-500/10 transition-all border border-red-500/10"
+                >
                   <Trash2 className="w-4 h-4" />
                 </button>
               </div>

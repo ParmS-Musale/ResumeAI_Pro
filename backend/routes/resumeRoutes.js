@@ -22,7 +22,8 @@ router.post('/optimize', async (req, res) => {
       originalContent: resumeText,
       jobDescription,
       optimizedContent,
-      atsScore: scoreData.score
+      atsScore: scoreData.score,
+      scoreData: scoreData
     });
     
     await newResume.save();
@@ -78,8 +79,20 @@ router.get('/latex/:id', async (req, res) => {
     const resume = await Resume.findById(req.params.id);
     if (!resume) return res.status(404).json({ error: 'Resume not found' });
     
+    const { generateLatex } = require('../utils/latexGenerator');
     const latexSource = generateLatex(resume.optimizedContent);
     res.type('text/plain').send(latexSource);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// Delete Resume
+router.delete('/resume/:id', async (req, res) => {
+  try {
+    await Resume.findByIdAndDelete(req.params.id);
+    await Version.deleteMany({ resumeId: req.params.id });
+    res.json({ message: 'Resume deleted successfully' });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

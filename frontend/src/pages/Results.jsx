@@ -88,7 +88,7 @@ const Results = () => {
 
             <h4 className="text-sm font-medium text-white mb-3">Key Improvements</h4>
             <ul className="space-y-3">
-              {['Action verbs enhanced', 'Metric-driven bullets', 'Keyword density optimized'].map((item, i) => (
+              {(resume.scoreData?.suggestions || ['Action verbs enhanced', 'Metric-driven bullets', 'Keyword density optimized']).map((item, i) => (
                 <li key={i} className="flex items-start gap-2 text-sm text-zinc-400">
                   <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5" />
                   {item}
@@ -97,19 +97,21 @@ const Results = () => {
             </ul>
           </div>
 
-          <div className="glass-card p-6 bg-red-500/5 border-red-500/10">
-            <h3 className="text-sm font-semibold text-red-400 uppercase tracking-wider mb-4 flex items-center gap-2">
-              <AlertCircle className="w-4 h-4" />
-              Missing Keywords
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {['Kubernetes', 'Microservices', 'System Design', 'Redis', 'GraphQL'].map(kw => (
-                <span key={kw} className="px-2 py-1 bg-red-500/10 text-red-400 text-xs rounded border border-red-500/20">
-                  {kw}
-                </span>
-              ))}
+          {(resume.scoreData?.missingKeywords?.length > 0) && (
+            <div className="glass-card p-6 bg-red-500/5 border-red-500/10">
+              <h3 className="text-sm font-semibold text-red-400 uppercase tracking-wider mb-4 flex items-center gap-2">
+                <AlertCircle className="w-4 h-4" />
+                Missing Keywords
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {resume.scoreData.missingKeywords.map(kw => (
+                  <span key={kw} className="px-2 py-1 bg-red-500/10 text-red-400 text-xs rounded border border-red-500/20">
+                    {kw}
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* Main Content: Comparison View */}
