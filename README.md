@@ -2,7 +2,7 @@
 
 AI-powered ATS Resume Optimizer that builds professional, high-scoring resumes tailored to job descriptions.
 
-## ✨ Features
+##  Features
 - **AI Engine**: Advanced optimization using OpenAI/Claude.
 - **ATS Analyzer**: Detailed match scoring and keyword analysis.
 - **LaTeX Export**: Professional, Overleaf-compatible resume templates.
